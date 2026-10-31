@@ -1,29 +1,49 @@
 % Compile with: latexmk -lualatex -pdf corpus-stats.tex
 \documentclass[11pt,a4paper]{article}
 
-% ---------- Fonts & Languages ----------
+% ==========================================
+% 1. MODERN FONTS & LANGUAGES
+% ==========================================
 \usepackage{fontspec}
-% \setmainfont{Charis SIL}
+% Tip: For Romance languages and IPA, "Charis SIL" or "Doulos SIL" are the best fonts. 
+% If you have them installed, uncomment the next line:
+% \setmainfont{Charis SIL} 
 
 \usepackage{polyglossia}
-\setmainlanguage{english}
+\setmainlanguage{english} % change to german if needed
+% Load the Romance languages you study
+\setotherlanguages{french,spanish,italian,portuguese,romanian,latin}
 
-% ---------- Typography ----------
-\usepackage{microtype}
-
-% ---------- Math, statistics & tables ----------
-\usepackage{amsmath,amssymb}
-\usepackage{siunitx}
+% ==========================================
+% 1b. TYPOGRAPHY & QUOTES
+% ==========================================
+\usepackage{microtype}   % Better line breaks, especially helpful for multilingual docs
+\usepackage{csquotes}    % Language-aware quotes: \enquote{...} picks the right marks
 \usepackage{booktabs}
+\usepackage{graphicx}
 
-% ---------- Plots ----------
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18}
+% ==========================================
+% 2. LINGUISTICS & PHONETICS
+% ==========================================
+\usepackage{tipauni}     % Modern, LuaLaTeX-safe IPA symbols
+\usepackage{gb4e}        % For interlinear glosses (standard in linguistics)
+\noautomath              % CRITICAL: Prevents gb4e from crashing with modern packages
+\usepackage{forest}      % For drawing modern syntax trees
 
-% ---------- Layout ----------
+% ==========================================
+% 3. MATH & LAYOUT
+% ==========================================
+\usepackage{amsmath,amssymb,mathtools}
 \usepackage{geometry}
 \geometry{margin=2.5cm}
 \usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{siunitx}
+% ==========================================
+% 4.  Plots  
+% ==========================================
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 \hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue}
 
 \title{Corpus Linguistics in LuaLaTeX \\ \large Statistics, Tables, and Zipf Plots}

@@ -1,34 +1,44 @@
 % Compile with LuaLaTeX (recommended) or XeLaTeX
 \documentclass[11pt,a4paper]{article}
 
-% ---------- Fonts & Languages ----------
+% ==========================================
+% 1. MODERN FONTS & LANGUAGES
+% ==========================================
 \usepackage{fontspec}
-% \setmainfont{Charis SIL}   % uncomment if Charis SIL is installed
+% Tip: For Romance languages and IPA, "Charis SIL" or "Doulos SIL" are the best fonts. 
+% If you have them installed, uncomment the next line:
+% \setmainfont{Charis SIL} 
 
 \usepackage{polyglossia}
-\setmainlanguage{english}          % change to german if needed
-\setotherlanguages{french,spanish,italian,portuguese,latin}
+\setmainlanguage{english} % change to german if needed
+% Load the Romance languages you study
+\setotherlanguages{french,spanish,italian,portuguese,romanian,latin}
 
-% ---------- Typography ----------
-\usepackage{microtype}             % better line breaks, especially multilingual
-
-% ---------- Math & Statistics ----------
-\usepackage{amsmath,amssymb,mathtools}
-\usepackage{siunitx}
-
-% ---------- Linguistics ----------
-\usepackage{tipauni}               % modern, LuaLaTeX-safe IPA (replaces tipa)
-\usepackage{gb4e}                  % linguistic examples & glosses
-\noautomath                        % CRITICAL: prevents gb4e from crashing on sub/superscripts
-\usepackage{forest}                % modern syntax trees
-
-% ---------- Layout & Tables ----------
-\usepackage{geometry}
-\geometry{margin=2.5cm}
+% ==========================================
+% 1b. TYPOGRAPHY & QUOTES
+% ==========================================
+\usepackage{microtype}   % Better line breaks, especially helpful for multilingual docs
+\usepackage{csquotes}    % Language-aware quotes: \enquote{...} picks the right marks
 \usepackage{booktabs}
 \usepackage{graphicx}
+
+% ==========================================
+% 2. LINGUISTICS & PHONETICS
+% ==========================================
+\usepackage{tipauni}     % Modern, LuaLaTeX-safe IPA symbols
+\usepackage{gb4e}        % For interlinear glosses (standard in linguistics)
+\noautomath              % CRITICAL: Prevents gb4e from crashing with modern packages
+\usepackage{forest}      % For drawing modern syntax trees
+
+% ==========================================
+% 3. MATH & LAYOUT
+% ==========================================
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
 \usepackage{hyperref}
-\usepackage{csquotes}
+\usepackage{xcolor}
+\usepackage{siunitx}
 
 % ---------- Bibliography (uncomment when you have a .bib file) ----------
 % \usepackage[style=authoryear,backend=biber]{biblatex}
@@ -64,7 +74,6 @@ right quotation marks for the current language: \enquote{So she said.}
   \ex \gll  Elle a mangé une pomme. \\
             She has eaten an  apple. \\
       \glt  `She ate an apple.'
-      \glend
 \end{exe}
 
 \section{IPA Example}

@@ -6,6 +6,11 @@ A small teaching collection for students of **computational linguistics** who al
 
 The kit exists because most LuaLaTeX material online is more than ten years old and recommends packages that no longer behave well with the current TeX Live. It is aimed at students who already know some classical LaTeX and now have to switch to LuaLaTeX for a linguistics course.
 
+## Quick start – which file should I open?
+1. New to LuaLaTeX? → Start with [`modern-lualatex-guide.tex`](https://github.com/iliya-radulov/lualatex_kit/blob/main/modern-lualatex-guide.tex)
+2. Want a clean template to copy? → Use [`cs-starter.tex`](https://github.com/iliya-radulov/lualatex_kit/blob/main/cs-starter.tex)
+3. Need a quick reference while writing? → Keep [`cl-cheatsheet.tex`](https://github.com/iliya-radulov/lualatex_kit/blob/main/cl-cheatsheet.tex) open
+
 ## What's in this repo
 
 | File | What it is | When to use it |

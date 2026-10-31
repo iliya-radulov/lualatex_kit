@@ -1,24 +1,48 @@
 % Compile with LuaLaTeX
 \documentclass[11pt,a4paper]{article}
 
+
+% ==========================================
+% 1. MODERN FONTS & LANGUAGES
+% ==========================================
 \usepackage{fontspec}
+% Tip: For Romance languages and IPA, "Charis SIL" or "Doulos SIL" are the best fonts. 
+% If you have them installed, uncomment the next line:
+% \setmainfont{Charis SIL} 
+
 \usepackage{polyglossia}
-\setmainlanguage{english}
+\setmainlanguage{english} % change to german if needed
+% Load the Romance languages you study
+\setotherlanguages{french,spanish,italian,portuguese,romanian,latin}
 
-\usepackage{amsmath,amssymb,mathtools}
-
-% Modern LuaLaTeX way to map \textipa{...} shortcuts to true Unicode symbols
-\usepackage{tipauni} 
-
-\usepackage{gb4e}
-\noautomath % Prevents the parameter stack size crash
-\usepackage{forest}
-\usepackage{geometry}
-\geometry{margin=2.2cm}
+% ==========================================
+% 1b. TYPOGRAPHY & QUOTES
+% ==========================================
+\usepackage{microtype}   % Better line breaks, especially helpful for multilingual docs
+\usepackage{csquotes}    % Language-aware quotes: \enquote{...} picks the right marks
 \usepackage{booktabs}
+\usepackage{graphicx}
+
+% ==========================================
+% 2. LINGUISTICS & PHONETICS
+% ==========================================
+\usepackage{tipauni}     % Modern, LuaLaTeX-safe IPA symbols
+\usepackage{gb4e}        % For interlinear glosses (standard in linguistics)
+\noautomath              % CRITICAL: Prevents gb4e from crashing with modern packages
+\usepackage{forest}      % For drawing modern syntax trees
+
+% ==========================================
+% 3. MATH & LAYOUT
+% ==========================================
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
 \usepackage{hyperref}
-\usepackage{enumitem}
 \usepackage{xcolor}
+\usepackage{siunitx}
+
+\usepackage{enumitem}
+
 
 \title{Computational Linguistics \\ LaTeX Cheat-Sheet}
 \author{}
@@ -38,7 +62,7 @@
   \item Display math: \texttt{\textbackslash[ ... \textbackslash]} or \texttt{equation} environment
 \end{itemize}
 
-\subsection{Most common symbols} % <--- FIXED: Added missing curly braces {}
+\subsection{Most common symbols}
 
 \begin{center}
 \begin{tabular}{ll@{\hspace{1.8cm}}ll}
@@ -50,7 +74,7 @@
 \texttt{\textbackslash mu}      & $\mu$      & \texttt{\textbackslash sigma}   & $\sigma$   \\
 \texttt{\textbackslash sum}     & $\sum$     & \texttt{\textbackslash prod}    & $\prod$    \\
 \texttt{\textbackslash frac\{a\}\{b\}} & $\frac{a}{b}$ & \texttt{\textbackslash sqrt\{x\}} & $\sqrt{x}$ \\
-\texttt{\textbackslash log}     & $\log$     & \texttt{\textbackslash exp}     & $\mathrm{exp}$     \\
+\texttt{\textbackslash log}     & $\log$     & \texttt{\textbackslash exp}     & $\mathrm{exp}$ \\
 \texttt{\textbackslash infty}   & $\infty$   & \texttt{\textbackslash approx}  & $\approx$  \\
 \texttt{\textbackslash leq}     & $\leq$     & \texttt{\textbackslash geq}     & $\geq$     \\
 \texttt{\textbackslash times}   & $\times$   & \texttt{\textbackslash cdot}    & $\cdot$    \\
@@ -59,7 +83,7 @@
 \end{tabular}
 \end{center}
 
-\subsection{Useful statistical examples} % <--- FIXED: Added missing curly braces {}
+\subsection{Useful statistical examples}
 
 \begin{verbatim}
 P(w_i | w_{i-1}) = \frac{C(w_{i-1}, w_i)}{C(w_{i-1})}
@@ -70,22 +94,23 @@ P(w_i | w_{i-1}) = \frac{C(w_{i-1}, w_i)}{C(w_{i-1})}
 \end{verbatim}
 
 %-------------------------------------------------
-\section{IPA Phonetic Symbols (\texttt{tipa})}
+\section{IPA Phonetic Symbols (\texttt{tipauni})}
 
 \begin{itemize}[leftmargin=*]
-  \item Always use \texttt{\textbackslash textipa\{...\}}
+  \item Preferred modern way: type the Unicode character directly (if your font supports it).
+  \item Classic shortcuts still work with \texttt{\textbackslash textipa\{...\}}.
 \end{itemize}
 
 \begin{center}
 \begin{tabular}{ll@{\hspace{1.2cm}}ll}
 \toprule
-\textbf{Command} & \textbf{Result} & \textbf{Command} & \textbf{Result} \\
+\textbf{Command / Unicode} & \textbf{Result} & \textbf{Command / Unicode} & \textbf{Result} \\
 \midrule
-\texttt{\textbackslash textipa\{[aI]\}}   & \textipa{[aI]}  & \texttt{\textbackslash textipa\{[E]\}}     & \textipa{[E]} \\
-\texttt{\textbackslash textipa\{[S]\}}    & \textipa{[S]}   & \texttt{\textbackslash textipa\{[Z]\}}     & \textipa{[Z]} \\
-\texttt{\textbackslash textipa\{[T]\}}    & \textipa{[T]}   & \texttt{\textbackslash textipa\{[D]\}}     & \textipa{[D]} \\
-\texttt{\textbackslash textipa\{[N]\}}    & \textipa{[N]}   & \texttt{\textbackslash textipa\{[@]\}}     & \textipa{[@]} \\
-\texttt{\textbackslash textipa\{[p\~{}]\}}& \textipa{[p\~{}]}  & \texttt{\textbackslash textipa\{[e:]\}}    & \textipa{[e:]} \\
+\texttt{\textbackslash textipa\{[aI]\}} / aɪ     & \textipa{[aɪ]}  & \texttt{\textbackslash textipa\{[E]\}} / ɛ      & \textipa{[ɛ]} \\
+\texttt{\textbackslash textipa\{[S]\}} / ʃ       & \textipa{[ʃ]}   & \texttt{\textbackslash textipa\{[Z]\}} / ʒ      & \textipa{[ʒ]} \\
+\texttt{\textbackslash textipa\{[T]\}} / θ       & \textipa{[θ]}   & \texttt{\textbackslash textipa\{[D]\}} / ð      & \textipa{[ð]} \\
+\texttt{\textbackslash textipa\{[N]\}} / ŋ       & \textipa{[ŋ]}   & \texttt{\textbackslash textipa\{[@]\}} / ə      & \textipa{[ə]} \\
+\texttt{\textbackslash textipa\{[p\~{}]\}} / p̃   & \textipa{[p̃]}  & \texttt{\textbackslash textipa\{[e:]\}} / eː    & \textipa{[eː]} \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -136,26 +161,27 @@ More examples in one block:
 \end{verbatim}
 
 %-------------------------------------------------
-\section{Multilingual Text (\texttt{polyglossia})}
+\section{Multilingual Text (\texttt{polyglossia} + \texttt{csquotes})}
 
 \begin{verbatim}
 \textfrench{Bonjour !}
 \textspanish{¡Hola!}
 \textitalian{Ciao!}
 \textportuguese{Olá!}
+
+\enquote{This automatically uses the correct quotation marks.}
 \end{verbatim}
 
 %-------------------------------------------------
 \section{Extension Packages}
 
-Load these as you grow into them --- all four are harmless, well-maintained,
-and ship with \texttt{texlive-full}.
+Load these as you grow into them --- all are well-maintained and ship with \texttt{texlive-full}.
 
 \begin{itemize}[leftmargin=*]
-  \item \texttt{microtype} --- just \verb|\usepackage{microtype}|. Noticeably better line breaks, especially in multilingual documents.
-  \item \texttt{csquotes} --- language-aware quotes. \verb|\enquote{Hello}| becomes ``Hello'' in English, « Hello » in French, „Hello"\ in German, automatically.
-  \item \texttt{siunitx} --- aligned numeric tables and in-text numbers. \verb|\num{1.23e-4}| $\to$ $\num{1.23e-4}$; column type \texttt{S[table-format=2.3]} aligns decimals.
-  \item \texttt{pgfplots} --- vector-based plots in pure LaTeX. \verb|\begin{loglogaxis}| for Zipf-style distributions; \verb|\addplot table [x=..., y=...] {file.csv}| to read a CSV.
+  \item \texttt{microtype} --- better line breaks, especially in multilingual documents.
+  \item \texttt{csquotes} --- language-aware quotes via \verb|\enquote{...}|.
+  \item \texttt{siunitx} --- aligned numeric tables and in-text numbers (\verb|\num{1.23e-4}|, \verb|\SI{95}{\percent}|).
+  \item \texttt{pgfplots} --- vector-based plots (including Zipf-style log-log plots).
 \end{itemize}
 
 %-------------------------------------------------
@@ -163,9 +189,9 @@ and ship with \texttt{texlive-full}.
 
 \begin{itemize}[leftmargin=*]
   \item Always compile with \textbf{LuaLaTeX}.
-  \item Use \texttt{latexmk -lualatex -pdf file.tex} to handle the multi-pass + Biber dance automatically.
-  \item For bibliography: use \texttt{biblatex} + Biber; for linguistics specifically, \texttt{style=unified} loads the LSA Unified Stylesheet.
-  \item Need a symbol? Search ``detexify'' or ``comprehensive latex symbol list''.
+  \item Use \texttt{latexmk -lualatex -pdf file.tex} to handle multi-pass compilation + Biber automatically.
+  \item For bibliography in linguistics: \texttt{biblatex} with \texttt{style=unified} (LSA) or \texttt{style=authoryear}.
+  \item Need a symbol? Use Detexify or the Comprehensive LaTeX Symbol List.
 \end{itemize}
 
 \end{document}

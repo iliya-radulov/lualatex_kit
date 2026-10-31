@@ -6,11 +6,11 @@
 % ==========================================
 \usepackage{fontspec}
 % Tip: For Romance languages and IPA, "Charis SIL" or "Doulos SIL" are the best fonts. 
-% If she has them installed, uncomment the next line:
+% If you have them installed, uncomment the next line:
 % \setmainfont{Charis SIL} 
 
 \usepackage{polyglossia}
-\setmainlanguage{english}
+\setmainlanguage{english} % change to german if needed
 % Load the Romance languages you study
 \setotherlanguages{french,spanish,italian,portuguese,romanian,latin}
 
@@ -19,6 +19,8 @@
 % ==========================================
 \usepackage{microtype}   % Better line breaks, especially helpful for multilingual docs
 \usepackage{csquotes}    % Language-aware quotes: \enquote{...} picks the right marks
+\usepackage{booktabs}
+\usepackage{graphicx}
 
 % ==========================================
 % 2. LINGUISTICS & PHONETICS
@@ -31,11 +33,14 @@
 % ==========================================
 % 3. MATH & LAYOUT
 % ==========================================
-\usepackage{amsmath,amssymb}
+\usepackage{amsmath,amssymb,mathtools}
 \usepackage{geometry}
 \geometry{margin=2.5cm}
 \usepackage{hyperref}
 \usepackage{xcolor}
+\usepackage{siunitx}
+
+
 
 \title{Computational Linguistics \\ \large Romance Languages Template}
 \author{Your Name}
