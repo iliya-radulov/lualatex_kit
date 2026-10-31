@@ -1,0 +1,119 @@
+% Compile with: latexmk -lualatex -pdf corpus-stats.tex
+\documentclass[11pt,a4paper]{article}
+
+% ---------- Fonts & Languages ----------
+\usepackage{fontspec}
+% \setmainfont{Charis SIL}
+
+\usepackage{polyglossia}
+\setmainlanguage{english}
+
+% ---------- Typography ----------
+\usepackage{microtype}
+
+% ---------- Math, statistics & tables ----------
+\usepackage{amsmath,amssymb}
+\usepackage{siunitx}
+\usepackage{booktabs}
+
+% ---------- Plots ----------
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% ---------- Layout ----------
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue}
+
+\title{Corpus Linguistics in LuaLaTeX \\ \large Statistics, Tables, and Zipf Plots}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+This worked example shows how to produce publication-ready statistical
+output directly in LuaLaTeX: aligned decimal tables with \texttt{siunitx},
+and vector-based plots with \texttt{pgfplots}. No Python screenshots required
+--- everything stays in the \texttt{.tex} source and recompiles when the data
+change.
+
+\section{Aligned Statistical Tables with \texttt{siunitx}}
+
+The \texttt{S} column type in \texttt{siunitx} aligns numbers on their decimal
+point. Scientific notation is formatted automatically, and the \textit{p} in
+\textit{p}-value stays correctly italicized.
+
+\begin{center}
+\begin{tabular}{l S[table-format=2.3] S[table-format=1.3e-1]}
+\toprule
+\textbf{Language} & \textbf{Mean Word Length} & \textbf{\textit{p}-value} \\
+\midrule
+French  & 4.812 & 3.4e-5 \\
+Spanish & 5.123 & 1.2e-6 \\
+Italian & 5.401 & 4.5e-4 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+In running text you can also use \verb|\num{1.23e-4}| to format a number as
+$\num{1.23e-4}$, and \verb|\SI{95}{\percent}| for a value with its unit:
+$\SI{95}{\percent}$.
+
+\section{Zipf's Law Plot with \texttt{pgfplots}}
+
+The plot below is generated purely in LaTeX from inline coordinates. The
+output is vector-based, so it stays sharp at any zoom level and the fonts
+match the rest of the document.
+
+\begin{center}
+\begin{tikzpicture}
+\begin{loglogaxis}[
+    xlabel={Rank (\(r\))},
+    ylabel={Frequency (\(f\))},
+    title={Zipf's Law in a Romance Corpus},
+    grid=major,
+    width=10cm, height=7cm,
+    legend pos=south west,
+]
+\addplot[only marks, mark=*, blue] coordinates {
+    (1, 1000) (2, 500) (3, 333) (4, 250) (5, 200)
+    (10, 100) (20, 50) (50, 20) (100, 10)
+};
+\addplot[red, thick, domain=1:100] {1000/x};
+\legend{Observed, $f = 1000/r$}
+\end{loglogaxis}
+\end{tikzpicture}
+\end{center}
+
+The red curve is the theoretical Zipf law $f = C/r$ for comparison. Replace
+the inline coordinates with your own corpus data when you have them.
+
+\section{Loading Data from a CSV}
+
+For a real corpus you do not want to retype counts into the \TeX{} source.
+Load them from a CSV with \texttt{pgfplotstable}:
+
+\begin{verbatim}
+\usepackage{pgfplotstable}
+% ...
+\addplot table [x=rank, y=freq, col sep=comma] {my_corpus.csv};
+\end{verbatim}
+
+The CSV needs a header row (e.g. \texttt{rank,freq}) and one data row per
+observation. Every recompile re-reads the file, so updating the corpus
+updates the plot without touching the LaTeX source.
+
+\section{Short Reference}
+
+\begin{itemize}
+    \item \verb|\num{1.23e-4}| --- format a number in text.
+    \item \verb|S[table-format=2.3]| --- column type that aligns decimals;
+          \texttt{2.3} means up to 2 digits before and 3 after.
+    \item \verb|\SI{95}{\percent}| --- number with a unit.
+    \item \verb|\begin{loglogaxis}| --- use instead of \texttt{axis} for log-log plots.
+    \item \verb|\addplot table [x=..., y=...]| --- read columns from a CSV.
+\end{itemize}
+
+\end{document}

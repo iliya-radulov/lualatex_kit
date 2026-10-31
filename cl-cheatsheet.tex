@@ -146,12 +146,25 @@ More examples in one block:
 \end{verbatim}
 
 %-------------------------------------------------
+\section{Extension Packages}
+
+Load these as you grow into them --- all four are harmless, well-maintained,
+and ship with \texttt{texlive-full}.
+
+\begin{itemize}[leftmargin=*]
+  \item \texttt{microtype} --- just \verb|\usepackage{microtype}|. Noticeably better line breaks, especially in multilingual documents.
+  \item \texttt{csquotes} --- language-aware quotes. \verb|\enquote{Hello}| becomes ``Hello'' in English, « Hello » in French, „Hello"\ in German, automatically.
+  \item \texttt{siunitx} --- aligned numeric tables and in-text numbers. \verb|\num{1.23e-4}| $\to$ $\num{1.23e-4}$; column type \texttt{S[table-format=2.3]} aligns decimals.
+  \item \texttt{pgfplots} --- vector-based plots in pure LaTeX. \verb|\begin{loglogaxis}| for Zipf-style distributions; \verb|\addplot table [x=..., y=...] {file.csv}| to read a CSV.
+\end{itemize}
+
+%-------------------------------------------------
 \section{Quick Tips}
 
 \begin{itemize}[leftmargin=*]
   \item Always compile with \textbf{LuaLaTeX}.
-  \item After changing languages or packages $\rightarrow$ compile twice.
-  \item For bibliography: use \texttt{biblatex} + Biber.
+  \item Use \texttt{latexmk -lualatex -pdf file.tex} to handle the multi-pass + Biber dance automatically.
+  \item For bibliography: use \texttt{biblatex} + Biber; for linguistics specifically, \texttt{style=unified} loads the LSA Unified Stylesheet.
   \item Need a symbol? Search ``detexify'' or ``comprehensive latex symbol list''.
 \end{itemize}
 

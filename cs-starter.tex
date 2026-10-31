@@ -9,6 +9,9 @@
 \setmainlanguage{english}          % change to german if needed
 \setotherlanguages{french,spanish,italian,portuguese,latin}
 
+% ---------- Typography ----------
+\usepackage{microtype}             % better line breaks, especially multilingual
+
 % ---------- Math & Statistics ----------
 \usepackage{amsmath,amssymb,mathtools}
 \usepackage{siunitx}
@@ -53,6 +56,9 @@ Precision and Recall:
 \end{align*}
 
 \section{Linguistic Example with Gloss}
+
+With \texttt{csquotes}, write \verb|\enquote{...}| and let LaTeX pick the
+right quotation marks for the current language: \enquote{So she said.}
 
 \begin{exe}
   \ex \gll  Elle a mangé une pomme. \\

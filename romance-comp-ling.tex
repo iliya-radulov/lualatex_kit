@@ -11,8 +11,14 @@
 
 \usepackage{polyglossia}
 \setmainlanguage{english}
-% Load the Romance languages she studies
+% Load the Romance languages you study
 \setotherlanguages{french,spanish,italian,portuguese,romanian,latin}
+
+% ==========================================
+% 1b. TYPOGRAPHY & QUOTES
+% ==========================================
+\usepackage{microtype}   % Better line breaks, especially helpful for multilingual docs
+\usepackage{csquotes}    % Language-aware quotes: \enquote{...} picks the right marks
 
 % ==========================================
 % 2. LINGUISTICS & PHONETICS
@@ -39,13 +45,17 @@
 \maketitle
 
 \section{Multilingual Text}
-Because you work with Romance languages, you can type native characters directly. \texttt{polyglossia} handles the hyphenation rules automatically.
+Because you work with Romance languages, you can type native characters
+directly. \texttt{polyglossia} handles the hyphenation rules automatically,
+and \texttt{csquotes} picks the correct quotation marks for whichever
+language is currently active --- just write \verb|\enquote{...}|.
 
 \begin{itemize}
-    \item \textbf{French:} \textfrench{L'élève a mangé une pomme.} (Notice the accents: é, è, ê, ç, œ)
-    \item \textbf{Spanish:} \textspanish{El niño comió una manzana.} (Notice the ñ and á)
-    \item \textbf{Portuguese:} \textportuguese{A criança comeu uma maçã.} (Notice the ã and ç)
-    \item \textbf{Romanian:} \textromanian{Copilul a mâncat un măr.} (Notice the ă, â, î)
+    \item \textbf{English:} \enquote{The student ate an apple.}
+    \item \textbf{French:} \textfrench{L'élève a mangé une pomme. \enquote{Bonjour.}} (é, è, ê, ç, œ --- and French guillemets with the correct narrow space inside)
+    \item \textbf{Spanish:} \textspanish{El niño comió una manzana. \enquote{¡Hola!}} (ñ, á)
+    \item \textbf{Portuguese:} \textportuguese{A criança comeu uma maçã. \enquote{Olá.}} (ã, ç)
+    \item \textbf{Romanian:} \textromanian{Copilul a mâncat un măr. \enquote{Bună.}} (ă, â, î)
 \end{itemize}
 
 \section{Phonetics and IPA}

@@ -143,7 +143,15 @@ luaotfload-tool --update
 Do \textbf{not} prepend \texttt{sudo} to \texttt{luaotfload-tool} --- it writes to your user cache and must run as your normal user. (On Windows the system handles font installation automatically; a LuaLaTeX cache refresh is rarely needed.)
 
 \subsection{Compilation Requirements}
-Unlike pdfLaTeX, LuaLaTeX sometimes requires \textbf{two compilation passes} to get the Table of Contents and cross-references right. Just press the compile button twice. If you are using \texttt{biblatex}, the sequence is: LuaLaTeX \(\rightarrow\) Biber \(\rightarrow\) LuaLaTeX \(\rightarrow\) LuaLaTeX.
+Unlike pdfLaTeX, LuaLaTeX sometimes requires \textbf{two compilation passes} to get the Table of Contents and cross-references right. If you are using \texttt{biblatex}, the full sequence is: LuaLaTeX \(\rightarrow\) Biber \(\rightarrow\) LuaLaTeX \(\rightarrow\) LuaLaTeX.
+
+Clicking the compile button four times is tedious and error-prone. Instead, open a terminal in the project folder and run:
+\begin{lstlisting}
+latexmk -lualatex -pdf your-document.tex
+\end{lstlisting}
+\texttt{latexmk} inspects the output after each pass, detects whether references are still unresolved, runs Biber when the \texttt{.bib} file has changed, and recompiles exactly as many times as needed. It ships with every modern TeX Live installation; there is nothing to install.
+
+For reproducibility (so a document still compiles cleanly a few years from now), the usual recipe is \texttt{latexmk} + \texttt{git} + a pinned TeX Live version. For teaching material or theses that may outlive their author's laptop, a Docker image such as \texttt{texlive/texlive} wraps the whole toolchain and can rebuild the exact same PDF on any machine.
 
 \section{Recommended Learning Resources}
 

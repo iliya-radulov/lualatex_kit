@@ -1,0 +1,138 @@
+% Compile with: latexmk -lualatex -pdf praat-pipeline.tex
+\documentclass[11pt,a4paper]{article}
+
+% ---------- Fonts & Languages ----------
+\usepackage{fontspec}
+% \setmainfont{Charis SIL}
+
+\usepackage{polyglossia}
+\setmainlanguage{english}
+
+% ---------- Linguistics ----------
+\usepackage{tipauni}
+
+% ---------- Graphics & drawing ----------
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{xcolor}
+
+% ---------- Math ----------
+\usepackage{amsmath}
+
+% ---------- Layout ----------
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue}
+
+% ---------- Custom colors for the tiers ----------
+\definecolor{phoncolor}{RGB}{230, 240, 255}
+\definecolor{wordcolor}{RGB}{240, 255, 230}
+
+% ---------- Reusable macro for a phoneme-tier box ----------
+% Usage: \phonbox{startX}{endX}{label}
+% Centres the label robustly instead of relying on `node[midway]`
+% on a rectangle, which behaves differently across TikZ versions.
+\newcommand{\phonbox}[3]{%
+    \draw[fill=phoncolor, draw=black] (#1,-0.5) rectangle (#2,0);
+    \node at ({(#1+#2)/2},-0.25) {#3};
+}
+
+\title{Praat $\to$ LuaLaTeX Pipeline \\
+       \large Spectrograms with TikZ-drawn alignment tiers}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+This worked example shows the pipeline used by phoneticians and computational
+linguists to publish aligned acoustic data: export a spectrogram from Praat as
+a PDF, embed it with \texttt{graphicx}, and draw the phoneme / word / gloss
+tiers over it with TikZ.
+
+\section{Step 1 --- Export from Praat}
+
+In Praat, select the Sound and the TextGrid together, open \textbf{View \&
+Edit}, show the spectrogram and the tiers you want, then \textbf{File $\to$
+Save as PDF\ldots}  Call the file \texttt{spectrogram.pdf}.
+
+For automated workflows, export the TextGrid as a text or CSV file and read it
+from Python with \texttt{parselmouth} or \texttt{textgridtools}. That gives you
+the exact start/end time of every segment in seconds, which you can feed
+directly into the TikZ coordinates below.
+
+\section{Step 2 --- Embed and overlay in LaTeX}
+
+The example below uses a gray placeholder box in place of a real spectrogram
+so this file compiles out of the box. Replace it with
+\verb|\includegraphics| once you have a real \texttt{spectrogram.pdf}.
+
+\begin{center}
+\begin{tikzpicture}[x=1cm, y=1cm]
+
+    % 1. THE SPECTROGRAM
+    % Real version:
+    % \node[anchor=south west, inner sep=0] (image) at (0,0)
+    %   {\includegraphics[width=12cm]{spectrogram.pdf}};
+    %
+    % Placeholder (delete when using a real image):
+    \draw[fill=gray!10, draw=gray] (0,0) rectangle (12,4);
+    \node at (6,2) {\textbf{[Insert Praat Spectrogram PDF Here]}};
+
+    % 2. THE ALIGNMENT TIERS (drawn below the spectrogram)
+
+    % --- PHONEME TIER ---
+    \phonbox{0}{1.5}{k}
+    \phonbox{1.5}{3}{\textipa{\ae}}
+    \phonbox{3}{4.5}{t}
+    \node[anchor=east] at (-0.2,-0.25) {\textbf{Phonemes:}};
+
+    % --- WORD TIER ---
+    \draw[fill=wordcolor, draw=black] (0,-1.2) rectangle (4.5,-0.7);
+    \node at (2.25,-0.95) {cat};
+    \node[anchor=east] at (-0.2,-0.95) {\textbf{Words:}};
+
+    % --- GLOSS TIER ---
+    \draw[draw=black] (0,-1.9) rectangle (4.5,-1.4);
+    \node at (2.25,-1.65) {\textit{`cat'}};
+    \node[anchor=east] at (-0.2,-1.65) {\textbf{Gloss:}};
+
+    % 3. TIME STAMPS
+    \draw[thick] (0,0) -- (0,-2.1);
+    \draw[thick] (4.5,0) -- (4.5,-2.1);
+    \node[below] at (0,-2.1) {0.00\,s};
+    \node[below] at (4.5,-2.1) {0.45\,s};
+
+\end{tikzpicture}
+\end{center}
+
+\section{Step 3 --- Scaling the coordinates}
+
+TikZ draws in abstract units, but the spectrogram sits in seconds. If your
+audio file is $T$ seconds long and you embedded the spectrogram at width $W$
+cm, then an event starting at time $t$ seconds has $x$-coordinate
+\[
+x \;=\; \frac{t}{T} \cdot W \quad \text{(cm)}.
+\]
+Example: a vowel starting at $0.3$~s in a $1.5$~s file, with a $12$~cm wide
+spectrogram, starts at $x = (0.3/1.5) \times 12 = 2.4$~cm.
+
+For anything more than a handful of segments, let Python do the arithmetic.
+A short script can read the TextGrid and spit out
+\verb|\phonbox{...}{...}{...}| lines directly, which you then
+\verb|\input{}| into the TikZ picture. LaTeX does the drawing; Python does
+the math.
+
+\section{Related packages}
+
+\begin{itemize}
+    \item \texttt{tikz-dependency} --- for dependency parsing: draws labeled
+          arcs over text (useful for spaCy or UDPipe output).
+    \item \texttt{expex}, \texttt{linguex} --- alternatives to \texttt{gb4e}
+          for numbered glosses; some departments prefer them.
+    \item \texttt{forest} --- phrase-structure trees (already in the main kit).
+\end{itemize}
+
+\end{document}

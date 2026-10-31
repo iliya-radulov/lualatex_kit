@@ -10,10 +10,12 @@ The kit exists because most LuaLaTeX material online is more than ten years old 
 
 | File | What it is | When to use it |
 |---|---|---|
-| `modern-lualatex-guide.tex` | Narrative tutorial. Why LuaLaTeX, what to use instead of the old pdfLaTeX packages, and how to build a safe preamble. | Read this first. |
-| `cl-cheatsheet.tex` | Short reference: math symbols, IPA, glosses, trees, polyglossia. | Keep it printed next to the keyboard. |
+| `modern-lualatex-guide.tex` | Narrative tutorial. Why LuaLaTeX, what to use instead of the old pdfLaTeX packages, how to build a safe preamble, and how to automate compilation with `latexmk`. | Read this first. |
+| `cl-cheatsheet.tex` | Short reference: math symbols, IPA, glosses, trees, polyglossia, and extension packages (`csquotes`, `siunitx`, `pgfplots`, `microtype`). | Keep it printed next to the keyboard. |
 | `cs-starter.tex` | Minimal, commented template for a new assignment. | Copy, rename, start writing. |
-| `romance-comp-ling.tex` | Worked example focused on Romance languages: French/Spanish/Portuguese/Romanian text, IPA, glosses, syntax trees, a dependency-parsing table. | A reference for seeing features in action. |
+| `romance-comp-ling.tex` | Worked example focused on Romance languages: French/Spanish/Portuguese/Romanian text with language-aware quotes, IPA, glosses, syntax trees, dependency parsing. | A reference for seeing features in action. |
+| `corpus-stats.tex` | Worked example for quantitative work: `siunitx`-aligned statistical tables with properly formatted *p*-values, a vector `pgfplots` Zipf plot, and a note on reading data from CSV. | For corpus-linguistics assignments and thesis chapters. |
+| `praat-pipeline.tex` | Worked example for phonetics: embed a Praat spectrogram as PDF and overlay phoneme / word / gloss tiers with TikZ, including the time-to-coordinate scaling formula. | For any phonetics or acoustic-analysis coursework. |
 
 ## Ubuntu setup (the easy way)
 
@@ -60,7 +62,7 @@ Then uncomment this line in any template:
 ## Known gotchas
 
 - **`gb4e` + modern packages:** always put `\noautomath` right after `\usepackage{gb4e}`. Without it, any example containing a subscript or superscript will crash. This is the #1 reason linguistics students give up on LaTeX. Every template in this repo already does this.
-- **Two compilation passes:** LuaLaTeX often needs to be run twice to resolve the table of contents and cross-references. With a bibliography: LuaLaTeX → Biber → LuaLaTeX → LuaLaTeX.
+- **Two compilation passes:** LuaLaTeX often needs to be run twice to resolve the table of contents and cross-references. With a bibliography the full sequence is LuaLaTeX → Biber → LuaLaTeX → LuaLaTeX. Don't do this manually: `latexmk -lualatex -pdf your-document.tex` handles the whole dance automatically and stops when the output is stable. `latexmk` ships with every modern TeX Live.
 - **Do not copy preambles from pre-2015 tutorials.** They will tell you to load `inputenc`, `fontenc`, `textcomp` and `tipa`. Under LuaLaTeX these are at best unneeded and at worst broken. Use `fontspec`, `polyglossia` and `tipauni` instead.
 
 ## Credits
