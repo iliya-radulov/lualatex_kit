@@ -1,0 +1,158 @@
+% Compile with LuaLaTeX
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage{english}
+
+\usepackage{amsmath,amssymb,mathtools}
+
+% Modern LuaLaTeX way to map \textipa{...} shortcuts to true Unicode symbols
+\usepackage{tipauni} 
+
+\usepackage{gb4e}
+\noautomath % Prevents the parameter stack size crash
+\usepackage{forest}
+\usepackage{geometry}
+\geometry{margin=2.2cm}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{xcolor}
+
+\title{Computational Linguistics \\ LaTeX Cheat-Sheet}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\vspace{1em}
+
+%-------------------------------------------------
+\section{Basic Math \& Statistics}
+
+\begin{itemize}[leftmargin=*]
+  \item Inline math: \texttt{\$P(w)\$} $\rightarrow$ $P(w)$
+  \item Display math: \texttt{\textbackslash[ ... \textbackslash]} or \texttt{equation} environment
+\end{itemize}
+
+\subsection{Most common symbols} % <--- FIXED: Added missing curly braces {}
+
+\begin{center}
+\begin{tabular}{ll@{\hspace{1.8cm}}ll}
+\toprule
+\textbf{Command} & \textbf{Result} & \textbf{Command} & \textbf{Result} \\
+\midrule
+\texttt{\textbackslash alpha}   & $\alpha$   & \texttt{\textbackslash beta}    & $\beta$    \\
+\texttt{\textbackslash lambda}  & $\lambda$  & \texttt{\textbackslash theta}   & $\theta$   \\
+\texttt{\textbackslash mu}      & $\mu$      & \texttt{\textbackslash sigma}   & $\sigma$   \\
+\texttt{\textbackslash sum}     & $\sum$     & \texttt{\textbackslash prod}    & $\prod$    \\
+\texttt{\textbackslash frac\{a\}\{b\}} & $\frac{a}{b}$ & \texttt{\textbackslash sqrt\{x\}} & $\sqrt{x}$ \\
+\texttt{\textbackslash log}     & $\log$     & \texttt{\textbackslash exp}     & $\mathrm{exp}$     \\
+\texttt{\textbackslash infty}   & $\infty$   & \texttt{\textbackslash approx}  & $\approx$  \\
+\texttt{\textbackslash leq}     & $\leq$     & \texttt{\textbackslash geq}     & $\geq$     \\
+\texttt{\textbackslash times}   & $\times$   & \texttt{\textbackslash cdot}    & $\cdot$    \\
+\texttt{\textbackslash rightarrow} & $\rightarrow$ & \texttt{\textbackslash Rightarrow} & $\Rightarrow$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Useful statistical examples} % <--- FIXED: Added missing curly braces {}
+
+\begin{verbatim}
+P(w_i | w_{i-1}) = \frac{C(w_{i-1}, w_i)}{C(w_{i-1})}
+
+\text{Precision} = \frac{TP}{TP + FP}
+\text{Recall}    = \frac{TP}{TP + FN}
+\text{F1}        = 2 \cdot \frac{P \cdot R}{P + R}
+\end{verbatim}
+
+%-------------------------------------------------
+\section{IPA Phonetic Symbols (\texttt{tipa})}
+
+\begin{itemize}[leftmargin=*]
+  \item Always use \texttt{\textbackslash textipa\{...\}}
+\end{itemize}
+
+\begin{center}
+\begin{tabular}{ll@{\hspace{1.2cm}}ll}
+\toprule
+\textbf{Command} & \textbf{Result} & \textbf{Command} & \textbf{Result} \\
+\midrule
+\texttt{\textbackslash textipa\{[aI]\}}   & \textipa{[aI]}  & \texttt{\textbackslash textipa\{[E]\}}     & \textipa{[E]} \\
+\texttt{\textbackslash textipa\{[S]\}}    & \textipa{[S]}   & \texttt{\textbackslash textipa\{[Z]\}}     & \textipa{[Z]} \\
+\texttt{\textbackslash textipa\{[T]\}}    & \textipa{[T]}   & \texttt{\textbackslash textipa\{[D]\}}     & \textipa{[D]} \\
+\texttt{\textbackslash textipa\{[N]\}}    & \textipa{[N]}   & \texttt{\textbackslash textipa\{[@]\}}     & \textipa{[@]} \\
+\texttt{\textbackslash textipa\{[p\~{}]\}}& \textipa{[p\~{}]}  & \texttt{\textbackslash textipa\{[e:]\}}    & \textipa{[e:]} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%-------------------------------------------------
+\section{Linguistic Examples \& Glosses (\texttt{gb4e})}
+
+\begin{verbatim}
+\begin{exe}
+  \ex \gll  Elle a mangé une pomme. \\
+            She has eaten an  apple. \\
+      \glt  `She ate an apple.'
+\end{exe}
+\end{verbatim}
+
+Result:
+
+\begin{exe}
+  \ex \gll  Elle a mangé une pomme. \\
+            She has eaten an  apple. \\
+      \glt  `She ate an apple.'
+\end{exe}
+
+\vspace{0.8em}
+More examples in one block:
+
+\begin{verbatim}
+\begin{exe}
+  \ex \gll ... \\
+            ... \\
+      \glt  `...'
+  \ex \gll ... \\
+            ... \\
+      \glt  `...'
+\end{exe}
+\end{verbatim}
+
+%-------------------------------------------------
+\section{Syntax Trees (\texttt{forest})}
+
+\begin{verbatim}
+\begin{forest}
+  [S
+    [NP [Det the] [N cat]]
+    [VP [V sleeps]]
+  ]
+\end{forest}
+\end{verbatim}
+
+%-------------------------------------------------
+\section{Multilingual Text (\texttt{polyglossia})}
+
+\begin{verbatim}
+\textfrench{Bonjour !}
+\textspanish{¡Hola!}
+\textitalian{Ciao!}
+\textportuguese{Olá!}
+\end{verbatim}
+
+%-------------------------------------------------
+\section{Quick Tips}
+
+\begin{itemize}[leftmargin=*]
+  \item Always compile with \textbf{LuaLaTeX}.
+  \item After changing languages or packages $\rightarrow$ compile twice.
+  \item For bibliography: use \texttt{biblatex} + Biber.
+  \item Need a symbol? Search ``detexify'' or ``comprehensive latex symbol list''.
+\end{itemize}
+
+\end{document}

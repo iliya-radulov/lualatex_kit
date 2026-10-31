@@ -1,0 +1,119 @@
+% Compile with LuaLaTeX
+\documentclass[11pt,a4paper]{article}
+
+% ==========================================
+% 1. MODERN FONTS & LANGUAGES
+% ==========================================
+\usepackage{fontspec}
+% Tip: For Romance languages and IPA, "Charis SIL" or "Doulos SIL" are the best fonts. 
+% If she has them installed, uncomment the next line:
+% \setmainfont{Charis SIL} 
+
+\usepackage{polyglossia}
+\setmainlanguage{english}
+% Load the Romance languages she studies
+\setotherlanguages{french,spanish,italian,portuguese,romanian,latin}
+
+% ==========================================
+% 2. LINGUISTICS & PHONETICS
+% ==========================================
+\usepackage{tipauni}     % Modern, LuaLaTeX-safe IPA symbols
+\usepackage{gb4e}        % For interlinear glosses (standard in linguistics)
+\noautomath              % CRITICAL: Prevents gb4e from crashing with modern packages
+\usepackage{forest}      % For drawing modern syntax trees
+
+% ==========================================
+% 3. MATH & LAYOUT
+% ==========================================
+\usepackage{amsmath,amssymb}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\title{Computational Linguistics \\ \large Romance Languages Template}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Multilingual Text}
+Because you work with Romance languages, you can type native characters directly. \texttt{polyglossia} handles the hyphenation rules automatically.
+
+\begin{itemize}
+    \item \textbf{French:} \textfrench{L'élève a mangé une pomme.} (Notice the accents: é, è, ê, ç, œ)
+    \item \textbf{Spanish:} \textspanish{El niño comió una manzana.} (Notice the ñ and á)
+    \item \textbf{Portuguese:} \textportuguese{A criança comeu uma maçã.} (Notice the ã and ç)
+    \item \textbf{Romanian:} \textromanian{Copilul a mâncat un măr.} (Notice the ă, â, î)
+\end{itemize}
+
+\section{Phonetics and IPA}
+You can use \texttt{tipauni} shortcuts or just type Unicode symbols directly. 
+\begin{itemize}
+    \item French \textit{pain}: \textipa{[pɛ̃]}
+    \item Portuguese \textit{são}: \textipa{[sɐ̃w̃]}
+    \item Spanish \textit{perro}: \textipa{[pero]} vs \textit{pero}: \textipa{[peɾo]}
+\end{itemize}
+
+\section{Interlinear Glosses (\texttt{gb4e})}
+This is the core tool for morphological analysis. Here is how a standard Romance gloss looks:
+
+\begin{exe}
+  \ex \gll L' élève a mangé une pomme. \\
+            the student has eaten an apple \\
+      \glt `The student ate an apple.' 
+      \label{ex:french}
+  \ex \gll El niño comió una manzana. \\
+            the boy ate an apple \\
+      \glt `The boy ate an apple.' \hfill (Spanish)
+\end{exe}
+
+\section{Syntax Trees (\texttt{forest})}
+For syntax classes, \texttt{forest} is much more powerful and modern than the old \texttt{qtree} or \texttt{tikz-qtree}. Here is a simple phrase structure tree:
+
+\begin{center}
+\begin{forest}
+  [CP
+    [C' [C $\emptyset$]
+      [IP
+        [DP [D el] [N niño]]
+        [I' [I comió]
+          [VP [V \_\_\_] [DP [D una] [N manzana]]]
+        ]
+      ]
+    ]
+  ]
+\end{forest}
+\end{center}
+
+\section{Computational Tool: Dependency Parsing}
+Since you are in \textit{computational} linguistics, you might need to represent dependency grammar (common in NLP tools like spaCy or UDPipe). While there are specific packages for this (like \texttt{tikz-dependency}), you can also use standard tables for basic alignment:
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Token} & \textbf{Lemma} & \textbf{Dependency Relation} \\
+\hline
+El & el & det \\
+niño & niño & nsubj \\
+comió & comer & root \\
+una & uno & det \\
+manzana & manzana & obj \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{Pro-Tip for ComputLing}
+If you need to paste code, data structures (like JSON), or Python code into your linguistic papers, use the \texttt{listings} package (or \texttt{minted} for Pygments-powered highlighting). Here is a Python snippet analysing Romance text:
+
+\begin{verbatim}
+import spacy
+# Load Spanish NLP model
+nlp = spacy.load("es_core_news_sm")
+doc = nlp("El niño comió una manzana.")
+for token in doc:
+    print(token.text, token.pos_, token.dep_)
+\end{verbatim}
+
+\end{document}

@@ -1,0 +1,98 @@
+% Compile with LuaLaTeX (recommended) or XeLaTeX
+\documentclass[11pt,a4paper]{article}
+
+% ---------- Fonts & Languages ----------
+\usepackage{fontspec}
+% \setmainfont{Charis SIL}   % uncomment if Charis SIL is installed
+
+\usepackage{polyglossia}
+\setmainlanguage{english}          % change to german if needed
+\setotherlanguages{french,spanish,italian,portuguese,latin}
+
+% ---------- Math & Statistics ----------
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{siunitx}
+
+% ---------- Linguistics ----------
+\usepackage{tipauni}               % modern, LuaLaTeX-safe IPA (replaces tipa)
+\usepackage{gb4e}                  % linguistic examples & glosses
+\noautomath                        % CRITICAL: prevents gb4e from crashing on sub/superscripts
+\usepackage{forest}                % modern syntax trees
+
+% ---------- Layout & Tables ----------
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{csquotes}
+
+% ---------- Bibliography (uncomment when you have a .bib file) ----------
+% \usepackage[style=authoryear,backend=biber]{biblatex}
+% \addbibresource{references.bib}
+
+\title{Computational Linguistics Starter Document}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Simple Statistical Formula}
+
+Conditional probability:
+\begin{equation}
+  P(w_i \mid w_{i-1}) = \frac{C(w_{i-1}, w_i)}{C(w_{i-1})}
+\end{equation}
+
+Precision and Recall:
+\begin{align*}
+  \text{Precision} &= \frac{TP}{TP + FP} \\
+  \text{Recall}    &= \frac{TP}{TP + FN}
+\end{align*}
+
+\section{Linguistic Example with Gloss}
+
+\begin{exe}
+  \ex \gll  Elle a mangé une pomme. \\
+            She has eaten an  apple. \\
+      \glt  `She ate an apple.'
+      \glend
+\end{exe}
+
+\section{IPA Example}
+
+English ``time'': \textipa{[aI]} \\
+French \textfrench{pain}: \textipa{[pE\~{}]}
+
+\section{Simple Syntax Tree}
+
+\begin{center}
+\begin{forest}
+  [S
+    [NP [Det the] [N cat]]
+    [VP [V sleeps]]
+  ]
+\end{forest}
+\end{center}
+
+\section{Multilingual Text}
+
+English text.
+\textfrench{Voici un exemple en français.}
+\textspanish{Aquí un ejemplo en español.}
+\textitalian{Ecco un esempio in italiano.}
+
+\section{Technical Notes}
+
+If you prefer to avoid \texttt{\textbackslash noautomath} entirely, there are two modern paths:
+\begin{itemize}
+    \item Drop \texttt{tipa}/\texttt{tipauni} and type IPA characters directly as Unicode, with a font that covers them (Charis SIL, Doulos SIL, Noto Sans).
+    \item Switch from \texttt{gb4e} to \texttt{expex} or \texttt{linguex}, both of which have fewer conflicts with other packages.
+\end{itemize}
+For now, \texttt{tipauni} + \texttt{gb4e} + \texttt{\textbackslash noautomath} is a perfectly fine and widely used combination.
+
+% \printbibliography
+
+\end{document}

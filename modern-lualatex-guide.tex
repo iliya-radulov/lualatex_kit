@@ -1,0 +1,156 @@
+% Compile with LuaLaTeX
+\documentclass[11pt,a4paper]{article}
+
+% --- Modern Engine Setup ---
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage{english}
+
+% --- Math & Formatting ---
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue
+}
+
+% --- Code Listings ---
+\usepackage{listings}
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!10}
+}
+
+\title{A Modern Guide to \textbf{LuaLaTeX} \\ \large For Linguists and Beginners (2026 Edition)}
+\author{Adapted for Modern TeX Live}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\vspace{1em}
+
+\section{Introduction: What is LuaLaTeX?}
+
+In the past, most people used \textbf{pdfLaTeX}. However, pdfLaTeX was designed in the 1990s, before the modern internet and Unicode. Today, if you want to use the actual fonts installed on your computer (like Times New Roman, Arial, or specialized linguistic fonts) and type any character from any language directly (like \textbf{ə, ʃ, ɛ̃}), you need a modern engine.
+
+\textbf{LuaLaTeX} is that modern engine. It has three major advantages:
+\begin{enumerate}
+    \item \textbf{Native Unicode Support:} You can type characters from any language (French, German, IPA) directly into your document. You don't need weird commands like \texttt{\textbackslash'e} for é; you just type é.
+    \item \textbf{Modern Fonts:} It uses the \texttt{fontspec} package to access TrueType and OpenType fonts installed on your Mac or PC.
+    \item \textbf{Lua Scripting:} It embeds the Lua programming language, allowing for advanced automation (though you rarely need this as a beginner).
+\end{enumerate}
+
+\section{The Golden Rules: Switching from pdfLaTeX to LuaLaTeX}
+
+If you find a tutorial online that was written for pdfLaTeX, \textbf{do not copy its preamble blindly}. There are four golden rules for LuaLaTeX:
+
+\begin{itemize}
+    \item \textbf{Never use \texttt{inputenc}.} LuaLaTeX handles UTF-8 natively. (Delete \texttt{\textbackslash usepackage\{inputenc\}}).
+    \item \textbf{Do not load \texttt{fontenc} or \texttt{textcomp}.} Under LuaLaTeX, \texttt{fontenc} is superseded by \texttt{fontspec}, and \texttt{textcomp} is already folded into current LaTeX. If you see them in an older tutorial, just delete those lines.
+    \item \textbf{Use \texttt{fontspec} instead.} This is how you load fonts.
+    \item \textbf{Use \texttt{polyglossia} instead of \texttt{babel}.} \texttt{polyglossia} is the modern language package built for Unicode.
+\end{itemize}
+
+\section{How to Handle Fonts}
+
+Because LuaLaTeX uses your operating system's fonts, you use \texttt{\textbackslash setmainfont} to choose your text font. By default, LuaLaTeX uses \textit{Latin Modern}, which is fine.
+
+If you want to change it (for example, to a font that has excellent IPA support, like \textit{Charis SIL} or \textit{Doulos SIL}), you simply add this to your preamble:
+\begin{lstlisting}
+\usepackage{fontspec}
+\setmainfont{Charis SIL} % The font must be installed on your computer!
+\end{lstlisting}
+
+\section{Modern Linguistics Packages}
+
+In the 2010s, linguists used the \texttt{tipa} package for phonetic symbols. However, \texttt{tipa} breaks easily with modern fonts. Today, we use \textbf{\texttt{tipauni}} (TIPA Unicode), which is specifically designed for LuaLaTeX.
+
+\subsection{IPA Symbols}
+Load the package like this:
+\begin{lstlisting}
+\usepackage{tipauni}
+\end{lstlisting}
+Then, you can use the familiar \texttt{\textbackslash textipa\{\}} shortcuts, or simply type the Unicode symbols directly if your font supports it.
+
+\subsection{Glosses and Examples (\texttt{gb4e})}
+The \texttt{gb4e} package is still the standard for numbered examples and interlinear glosses. However, it sometimes conflicts with math and phonetic packages.
+\textbf{The Fix:} Always put \texttt{\textbackslash noautomath} right after loading \texttt{gb4e} to prevent crashes.
+
+\begin{lstlisting}
+\usepackage{gb4e}
+\noautomath % Fixes a known infinite loop bug
+\end{lstlisting}
+
+\section{A Complete Minimal Preamble}
+
+Here is a safe, modern preamble you can copy for your computational linguistics assignments:
+
+\begin{lstlisting}
+\documentclass[11pt,a4paper]{article}
+
+% 1. Modern Engine & Fonts
+\usepackage{fontspec}
+% \setmainfont{Charis SIL} % Uncomment to change font
+
+% 2. Languages
+\usepackage{polyglossia}
+\setmainlanguage{english}
+\setotherlanguages{french,spanish,german}
+
+% 3. Math
+\usepackage{amsmath,amssymb}
+
+% 4. Linguistics
+\usepackage{tipauni}     % Modern IPA
+\usepackage{gb4e}
+\noautomath              % CRITICAL for gb4e to work with other packages
+\usepackage{forest}      % Syntax trees
+
+% 5. Layout
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{hyperref}
+\end{lstlisting}
+
+\section{Common Troubleshooting (The "Gotchas")}
+
+\subsection{Missing Packages (\texttt{tlmgr})}
+If you get an error saying \texttt{File 'xyz.sty' not found}, it means your TeX installation is missing a package. If you are using a minimal installation (like BasicTeX on Mac), you must install it via the terminal:
+\begin{lstlisting}
+sudo tlmgr install ifmtarg
+\end{lstlisting}
+
+\subsection{Stale Font Caches}
+If you install a new font (such as \textit{Charis SIL}) and LuaLaTeX cannot find it, the font database needs to be refreshed.
+
+On \textbf{Ubuntu / Linux}, after dropping the \texttt{.ttf} files into \texttt{\textasciitilde/.local/share/fonts/}:
+\begin{lstlisting}
+fc-cache -fv
+\end{lstlisting}
+
+On \textbf{macOS} the equivalent one-off command is:
+\begin{lstlisting}
+luaotfload-tool --update
+\end{lstlisting}
+Do \textbf{not} prepend \texttt{sudo} to \texttt{luaotfload-tool} --- it writes to your user cache and must run as your normal user. (On Windows the system handles font installation automatically; a LuaLaTeX cache refresh is rarely needed.)
+
+\subsection{Compilation Requirements}
+Unlike pdfLaTeX, LuaLaTeX sometimes requires \textbf{two compilation passes} to get the Table of Contents and cross-references right. Just press the compile button twice. If you are using \texttt{biblatex}, the sequence is: LuaLaTeX \(\rightarrow\) Biber \(\rightarrow\) LuaLaTeX \(\rightarrow\) LuaLaTeX.
+
+\section{Recommended Learning Resources}
+
+\begin{itemize}
+    \item \textbf{Overleaf's 30-Minute Intro:} \url{https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes} (Remember to change the compiler to LuaLaTeX in the Overleaf menu!)
+    \item \textbf{LearnLaTeX.org:} \url{https://www.learnlatex.org/} (Highly recommended interactive tutorial).
+    \item \textbf{Detexify:} \url{http://detexify.kirelabs.org/classify.html} (Draw a symbol with your mouse, and it tells you the LaTeX command).
+\end{itemize}
+
+\end{document}
