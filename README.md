@@ -74,4 +74,3 @@ Released under the **MIT License** — see [`LICENSE`](LICENSE).
 ---
 
 Feedback and suggestions for improvement are most welcome.
-# lulatex_kit
