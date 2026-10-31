@@ -1,3 +1,5 @@
+<img width="1376" height="768" alt="overhead flat-lay still life, ag 96545 ocx" src="https://github.com/user-attachments/assets/903109c0-98a6-430f-be01-0a56ba5402d3" />
+
 # Modern LuaLaTeX Starter Kit for Computational Linguistics
 
 A small teaching collection for students of **computational linguistics** who also work with **Romance languages** (French, Spanish, Italian, Portuguese, Romanian). Everything in this kit is written for a current (2026) TeX Live installation and uses **LuaLaTeX**, not pdfLaTeX.
