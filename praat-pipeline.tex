@@ -1,36 +1,61 @@
 % Compile with: latexmk -lualatex -pdf praat-pipeline.tex
 \documentclass[11pt,a4paper]{article}
 
-% ---------- Fonts & Languages ----------
+% ==========================================
+% 1. MODERN FONTS & LANGUAGES
+% ==========================================
 \usepackage{fontspec}
-% \setmainfont{Charis SIL}
+% Tip: For Romance languages and IPA, "Charis SIL" or "Doulos SIL" are the best fonts. 
+% If you have them installed, uncomment the next line:
+% \setmainfont{Charis SIL} 
 
 \usepackage{polyglossia}
-\setmainlanguage{english}
+\setmainlanguage{english} % change to german if needed
+% Load the Romance languages you study
+\setotherlanguages{french,spanish,italian,portuguese,romanian,latin}
 
-% ---------- Linguistics ----------
-\usepackage{tipauni}
-
-% ---------- Graphics & drawing ----------
+% ==========================================
+% 1b. TYPOGRAPHY & QUOTES
+% ==========================================
+\usepackage{microtype}   % Better line breaks, especially helpful for multilingual docs
+\usepackage{csquotes}    % Language-aware quotes: \enquote{...} picks the right marks
+\usepackage{booktabs}
 \usepackage{graphicx}
-\usepackage{tikz}
+\usepackage{tikz}	     % Graphics & drawing 
 \usetikzlibrary{calc}
-\usepackage{xcolor}
 
-% ---------- Math ----------
-\usepackage{amsmath}
+% ==========================================
+% 2. LINGUISTICS & PHONETICS
+% ==========================================
+\usepackage{tipauni}     % Modern, LuaLaTeX-safe IPA symbols
+%\usepackage{gb4e}        % For interlinear glosses (standard in linguistics)
+%\noautomath              % CRITICAL: Prevents gb4e from crashing with modern packages
+%\usepackage{forest}      % For drawing modern syntax trees
 
-% ---------- Layout ----------
+% ==========================================
+% 3. MATH & LAYOUT
+% ==========================================
+\usepackage{amsmath,amssymb,mathtools}
 \usepackage{geometry}
 \geometry{margin=2.5cm}
 \usepackage{hyperref}
+\usepackage{xcolor}
+%\usepackage{siunitx}
+
+% ==========================================
+% 4. HYPERSETUP
+% ==========================================
 \hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue}
 
-% ---------- Custom colors for the tiers ----------
+% ==========================================
+% 5. Custom colors for the tiers
+% ==========================================
 \definecolor{phoncolor}{RGB}{230, 240, 255}
 \definecolor{wordcolor}{RGB}{240, 255, 230}
 
-% ---------- Reusable macro for a phoneme-tier box ----------
+% ==========================================
+% 5. Reusable macro for a phoneme-tier box 
+% ==========================================
 % Usage: \phonbox{startX}{endX}{label}
 % Centres the label robustly instead of relying on `node[midway]`
 % on a rectangle, which behaves differently across TikZ versions.
@@ -70,16 +95,16 @@ so this file compiles out of the box. Replace it with
 \verb|\includegraphics| once you have a real \texttt{spectrogram.pdf}.
 
 \begin{center}
-\begin{tikzpicture}[x=1cm, y=1cm]
+\begin{tikzpicture}[x=2.5cm, y=1cm]
 
     % 1. THE SPECTROGRAM
-    % Real version:
+    % Real version (uncomment and replace with your own file):
     % \node[anchor=south west, inner sep=0] (image) at (0,0)
     %   {\includegraphics[width=12cm]{spectrogram.pdf}};
     %
-    % Placeholder (delete when using a real image):
-    \draw[fill=gray!10, draw=gray] (0,0) rectangle (12,4);
-    \node at (6,2) {\textbf{[Insert Praat Spectrogram PDF Here]}};
+    % Placeholder (delete the two lines below when using a real image):
+    \draw[fill=gray!10, draw=gray] (0,0) rectangle (4.5,2);
+    \node at (2,1) {\textbf{[Insert Praat Spectrogram PDF Here]}};
 
     % 2. THE ALIGNMENT TIERS (drawn below the spectrogram)
 
@@ -134,5 +159,41 @@ the math.
           for numbered glosses; some departments prefer them.
     \item \texttt{forest} --- phrase-structure trees (already in the main kit).
 \end{itemize}
+
+\section{Where to Get Praat and Learn More}
+
+Rather than ship a copyrighted spectrogram with this kit, we point you at the
+original sources. Everything below is free to download and read.
+
+\begin{itemize}
+    \item \textbf{Praat (the software).} The current version runs on Linux,
+          macOS, and Windows, and is distributed under the GPL by its authors,
+          Paul Boersma and David Weenink at the University of Amsterdam. \\
+          \url{https://www.fon.hum.uva.nl/praat/}
+
+    \item \textbf{The Praat manual.} Built into the application
+          (\textbf{Help $\to$ Praat Intro}), and also available as a reference
+          via the same project page. The ``Intro'' and ``Tutorials'' entries
+          are the quickest way in.
+
+    \item \textbf{Boersma, P. (2014). \emph{The use of Praat in corpus
+          research.}} In J. Durand, U. Gut \& G. Kristoffersen (Eds.),
+          \emph{The Oxford Handbook of Corpus Phonology} (pp. 342--360).
+          Oxford University Press. \\
+          DOI: \url{https://doi.org/10.1093/oxfordhb/9780199571932.013.016} \\
+          Open access (UvA-DARE): \\ \url{https://dare.uva.nl/id/68169330-87c7-486a-9450-403748a32e0d} \\
+          Author's preprint: \\ \url{https://www.fon.hum.uva.nl/paul/papers/PraatForCorpora2.pdf}
+
+          \noindent A chapter aimed at researchers who want to use Praat's
+          scripting facilities on larger corpora, and a good practical
+          complement to the built-in manual. Either of the two open-access
+          links above gives you the full text without a university login.
+\end{itemize}
+
+Produce one short recording ("hello world" is enough), annotate the TextGrid
+in Praat, export the spectrogram as PDF, and drop it into this file where the
+placeholder currently sits. The TikZ tiers above are deliberately simple so
+you can see exactly where to adjust the coordinates once your own audio
+replaces the placeholder.
 
 \end{document}

@@ -1,0 +1,67 @@
+name: Build LaTeX PDFs
+
+# WHAT THIS DOES
+# --------------
+# Every time a .tex file (or the .latexmkrc, or this workflow itself) changes
+# on main, GitHub spins up a clean Ubuntu VM, installs a full TeX Live, and
+# runs latexmk on each of the kit's six .tex files.  The resulting .pdf
+# files are attached to the run as downloadable "artifacts" so anyone can
+# grab the latest compiled PDF without installing TeX themselves.
+#
+# If any file fails to compile, the Actions tab shows a red cross and
+# GitHub emails the repo owner.  Think of it as a smoke alarm for the kit.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.tex'
+      - '.latexmkrc'
+      - '.github/workflows/build-latex.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '**.tex'
+      - '.latexmkrc'
+      - '.github/workflows/build-latex.yml'
+  # Also allow manual triggering from the Actions tab (useful for testing).
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      # If one file fails, keep compiling the others so you see all errors
+      # at once rather than only the first.
+      fail-fast: false
+
+      matrix:
+        name:
+          - modern-lualatex-guide
+          - cl-cheatsheet
+          - cs-starter
+          - romance-comp-ling
+          - corpus-stats
+          - praat-pipeline
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Compile ${{ matrix.name }}.tex with LuaLaTeX
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: ${{ matrix.name }}.tex
+          # Swap the action's default -pdf for -pdflua, so the engine stays
+          # LuaLaTeX even though we're also using .latexmkrc locally.
+          latexmk_use_lualatex: true
+
+      - name: Upload ${{ matrix.name }}.pdf as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.name }}
+          path: ${{ matrix.name }}.pdf
+          if-no-files-found: error
+          # Default retention is 90 days.  Uncomment to override.
+          # retention-days: 30

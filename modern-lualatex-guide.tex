@@ -1,24 +1,60 @@
 % Compile with LuaLaTeX
 \documentclass[11pt,a4paper]{article}
 
-% --- Modern Engine Setup ---
-\usepackage{fontspec}
-\usepackage{polyglossia}
-\setmainlanguage{english}
 
-% --- Math & Formatting ---
+% ==========================================
+% 1. MODERN FONTS & LANGUAGES
+% ==========================================
+\usepackage{fontspec}
+% Tip: For Romance languages and IPA, "Charis SIL" or "Doulos SIL" are the best fonts. 
+% If you have them installed, uncomment the next line:
+% \setmainfont{Charis SIL} 
+
+\usepackage{polyglossia}
+\setmainlanguage{english} % change to german if needed
+% Load the Romance languages you study
+\setotherlanguages{french,spanish,italian,portuguese,romanian,latin}
+
+% ==========================================
+% 1b. TYPOGRAPHY & QUOTES
+% ==========================================
+\usepackage{microtype}   % Better line breaks, especially helpful for multilingual docs
+\usepackage{csquotes}    % Language-aware quotes: \enquote{...} picks the right marks
+\usepackage{booktabs}
+\usepackage{graphicx}
+
+% ==========================================
+% 2. LINGUISTICS & PHONETICS
+% ==========================================
+\usepackage{tipauni}     % Modern, LuaLaTeX-safe IPA symbols
+\usepackage{gb4e}        % For interlinear glosses (standard in linguistics)
+\noautomath              % CRITICAL: Prevents gb4e from crashing with modern packages
+\usepackage{forest}      % For drawing modern syntax trees
+
+% ==========================================
+% 3. MATH & LAYOUT
+% ==========================================
 \usepackage{amsmath,amssymb,mathtools}
 \usepackage{geometry}
 \geometry{margin=2.5cm}
-\usepackage{xcolor}
 \usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{siunitx}
+
+% ==========================================
+% 4. HYPERSETUP
+% ==========================================
+ 
 \hypersetup{
     colorlinks=true,
     linkcolor=blue,
     urlcolor=blue
 }
 
-% --- Code Listings ---
+% ==========================================
+% 5.    CODE LISTINGS
+% ==========================================
+
 \usepackage{listings}
 \lstset{
     basicstyle=\ttfamily\small,
@@ -58,6 +94,31 @@ If you find a tutorial online that was written for pdfLaTeX, \textbf{do not copy
     \item \textbf{Use \texttt{fontspec} instead.} This is how you load fonts.
     \item \textbf{Use \texttt{polyglossia} instead of \texttt{babel}.} \texttt{polyglossia} is the modern language package built for Unicode.
 \end{itemize}
+
+\section{Migration Table: Pre-2015 vs 2026}
+
+If you are porting a template from an older tutorial, this is the shortest path. Everything on the left is from pre-2015 tutorials you may still find on StackExchange, Overleaf, or university handouts; everything on the right is the current practice under LuaLaTeX.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.6}  % add some air between the lines
+\begin{tabular}{p{1.4cm} p{4.6cm} p{4.3cm} p{3cm}}
+\toprule
+\textbf{Topic} & \textbf{Old way (pre-2015)} & \textbf{New way (2026)} & \textbf{Remark} \\
+\midrule
+Input encoding & \texttt{\textbackslash usepackage[utf8]\{inputenc\}} & Delete it. & LuaLaTeX is UTF-8 native. \\
+Font encoding & \texttt{\textbackslash usepackage[T1]\{fontenc\}} & \texttt{\textbackslash usepackage\{fontspec\}} & \texttt{textcomp} is also obsolete. \\
+Fonts & \texttt{\textbackslash usepackage\{times\}} and friends & \texttt{\textbackslash setmainfont\{...\}} & Any OpenType font on your OS. \\
+Languages & \texttt{\textbackslash usepackage[french]\{babel\}} & \texttt{\textbackslash usepackage\{polyglossia\}} & Then \texttt{\textbackslash setotherlanguages\{...\}}. \\
+IPA & \texttt{\textbackslash usepackage\{tipa\}} & \texttt{\textbackslash usepackage\{tipauni\}}\,$^{\ast}$ & See note below. \\
+Quotes & \texttt{``...''}, \texttt{<<...>>} by hand & \texttt{\textbackslash enquote\{...\}} (\texttt{csquotes}) & Language-aware. \\
+Glosses & \texttt{\textbackslash usepackage\{gb4e\}} & \texttt{\textbackslash usepackage\{gb4e\}} + \texttt{\textbackslash noautomath} & Same package, essential workaround. \\
+Compile & \texttt{pdflatex}, click twice & \texttt{latexmk -lualatex -pdf} & Handles multi-pass + Biber. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent $^{\ast}$ \texttt{tipauni} is a Unicode-era replacement for \texttt{tipa}. Because it uses true Unicode characters, it is compatible with \texttt{fontspec} and \texttt{polyglossia}; the old \texttt{tipa} is not.
 
 \section{How to Handle Fonts}
 
@@ -122,6 +183,27 @@ Here is a safe, modern preamble you can copy for your computational linguistics 
 
 \section{Common Troubleshooting (The "Gotchas")}
 
+\subsection{Common First Errors — a quick lookup}
+
+Scan this table before anything else. Nine out of ten first-time errors are in it.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.8}  % add some air between the lines
+\begin{tabular}{p{4.8cm} p{3.6cm} p{5.5cm}}
+\toprule
+\textbf{Symptom / Error message} & \textbf{Likely cause} & \textbf{Fix} \\
+\midrule
+\texttt{Unicode character ... not set up for use with LaTeX} & The current font lacks that glyph. & Switch to a font with wide coverage: \texttt{\textbackslash setmainfont\{Charis SIL\}} or Doulos SIL. \\
+Missing references, broken Table of Contents & First pass has not yet resolved labels. & Compile again, or use \texttt{latexmk -lualatex -pdf}. \\
+\texttt{File 'fontspec.sty' not found} & You are on a minimal TeX installation. & Install the recommended TeX Live collections (see installation section). \\
+Strange IPA output or missing symbols & Legacy \texttt{tipa} workflow combined with a non-tipa font. & Switch to \texttt{tipauni} and a Unicode-capable font. \\
+\texttt{gb4e} crashes on a subscript or superscript & Missing \texttt{\textbackslash noautomath}. & Add \texttt{\textbackslash noautomath} immediately after \texttt{\textbackslash usepackage\{gb4e\}}. \\
+\texttt{luaotfload: font ... not found} & Font cache is stale. & Linux: \texttt{fc-cache -fv}. macOS: \texttt{luaotfload-tool --update}. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
 \subsection{Missing Packages (\texttt{tlmgr})}
 If you get an error saying \texttt{File 'xyz.sty' not found}, it means your TeX installation is missing a package. If you are using a minimal installation (like BasicTeX on Mac), you must install it via the terminal:
 \begin{lstlisting}
@@ -152,6 +234,28 @@ latexmk -lualatex -pdf your-document.tex
 \texttt{latexmk} inspects the output after each pass, detects whether references are still unresolved, runs Biber when the \texttt{.bib} file has changed, and recompiles exactly as many times as needed. It ships with every modern TeX Live installation; there is nothing to install.
 
 For reproducibility (so a document still compiles cleanly a few years from now), the usual recipe is \texttt{latexmk} + \texttt{git} + a pinned TeX Live version. For teaching material or theses that may outlive their author's laptop, a Docker image such as \texttt{texlive/texlive} wraps the whole toolchain and can rebuild the exact same PDF on any machine.
+
+\section{A Note on Lua (Why We Use Python Instead)}
+
+LuaLaTeX embeds the Lua programming language. You can write loops, read CSV files, and do calculations directly inside your \texttt{.tex} source using \texttt{\textbackslash directlua}. However, as a computational linguist, your real data processing almost certainly belongs in Python or R --- not inside the typesetting engine. We include one tiny example here so you understand the bridge exists, but we deliberately do not teach Lua programming in this kit.
+
+\begin{lstlisting}
+\documentclass{article}
+\usepackage{fontspec}
+
+\begin{document}
+
+\directlua{
+  local words = {"chat", "chien", "maison"}
+  tex.sprint("Corpus contains " .. #words .. " items.")
+}
+
+\end{document}
+\end{lstlisting}
+
+When compiled, this prints ``Corpus contains 3 items.'' in the body of the PDF. The Lua block runs at compile time, builds a string, and \texttt{tex.sprint} injects it into the LaTeX output as if you had typed it yourself.
+
+For anything substantial, do your corpus processing in Python or R, write the result to a \texttt{.csv} or a \texttt{.tex} fragment, and let LaTeX \texttt{\textbackslash input} that file. That is a cleaner division of labour than embedding complex logic inside your document --- and it keeps your analysis reproducible with the tools your discipline already uses.
 
 \section{Recommended Learning Resources}
 
