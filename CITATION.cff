@@ -1,0 +1,39 @@
+# This file tells GitHub, Zenodo, and other tools how to cite this kit.
+# GitHub renders a "Cite this repository" button in the right-hand sidebar
+# that reads from this file.  Zenodo reads it when minting a DOI on release.
+#
+# Before each release, update the `version` and `date-released` fields
+# below to match the new tag.
+
+cff-version: 1.2.0
+message: "If you use this kit, please cite it as below."
+title: "A Modern LuaLaTeX Starter Kit for Computational Linguistics"
+abstract: >
+  A six-file teaching collection for students of computational linguistics
+  working with Romance languages (French, Spanish, Italian, Portuguese,
+  Romanian) and IPA.  Written for current (2026) TeX Live installations
+  using LuaLaTeX.  Includes a narrative tutorial, a cheat sheet, a starter
+  template, and three worked examples (Romance languages, corpus statistics,
+  Praat alignment with TikZ-drawn tiers).
+
+authors:
+  - given-names: "Iliya Angelov"
+    family-names: "Radulov"
+    orcid: "https://orcid.org/0000-0001-8943-5083"
+
+version: 2.1.0
+date-released: "2026-11-01"
+license: MIT
+
+repository-code: "https://github.com/iliya-radulov/lualatex_kit"
+url: "https://iliya-radulov.github.io/fragments/active_fragments/lualatex-kit/lualatex-kit.html"
+
+keywords:
+  - LuaLaTeX
+  - computational linguistics
+  - Romance languages
+  - IPA
+  - phonetics
+  - TeX Live
+  - teaching material
+  - linguistics
